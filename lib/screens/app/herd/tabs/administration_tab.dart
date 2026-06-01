@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:idgoat/screens/app/herd/models/goat.dart';
 import 'package:idgoat/theme/colors.dart';
 
 class AdministrationTab extends StatelessWidget {
-  const AdministrationTab({super.key});
+  const AdministrationTab({super.key, required this.goat});
+
+  final Goat goat;
 
   static const _textSoftWhite = Color(0xFFBCBCBC);
 
@@ -14,6 +18,8 @@ class AdministrationTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _buildGeneralInfo(),
+          const SizedBox(height: 24),
           _buildOwnersBlock(),
           const SizedBox(height: 24),
           _buildGalleryBlock(),
@@ -29,6 +35,83 @@ class AdministrationTab extends StatelessWidget {
     );
   }
 
+  Widget _buildGeneralInfo() {
+    return Theme(
+      data: ThemeData(
+        dividerColor: Colors.transparent,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.cardBackground,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Colors.white.withOpacity(0.05)),
+        ),
+        child: ExpansionTile(
+          collapsedIconColor: AppColors.textGold,
+          iconColor: AppColors.textGold,
+          title: const Text(
+            'ЗАГАЛЬНА ІНФОРМАЦІЯ',
+            style: TextStyle(
+              color: AppColors.textGold,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1,
+            ),
+          ),
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              child: Column(
+                children: [
+                  _buildInfoRow('Кличка', goat.name),
+                  _buildInfoRow('Системний ID', goat.tagId),
+                  _buildInfoRow('Заводчик', goat.breeder ?? '—'),
+                  _buildInfoRow('Власник', goat.owner ?? '—'),
+                  _buildInfoRow('Стать', goat.isDoe ? 'Коза' : 'Козел'),
+                  _buildInfoRow('Репродуктивний статус', goat.reproductiveStatus ?? '—'),
+                  _buildInfoRow('Порода та Кровність', '${goat.breed ?? '—'} (${goat.bloodline ?? '—'})'),
+                  if (goat.physiologicalStatus.isNotEmpty)
+                    _buildInfoRow('Фізіологічний статус', goat.physiologicalStatus.join(', ')),
+                  _buildInfoRow('Номер ДАР', goat.darNumber ?? '—'),
+                  _buildInfoRow('Електронний ідентифікатор', goat.electronicId ?? '—'),
+                  _buildInfoRow('Дата народження', goat.birthDate != null ? DateFormat('dd.MM.yyyy').format(goat.birthDate!) : '—'),
+                  _buildInfoRow('Поточна вага', goat.currentWeightKg != null ? '${goat.currentWeightKg} кг' : '—'),
+                  _buildInfoRow('Кількість у окоті', goat.litterSize?.toString() ?? '—'),
+                  _buildInfoRow('Склад окоту', goat.litterComposition ?? '—'),
+                  _buildInfoRow('Вага при народженні', goat.birthWeightKg != null ? '${goat.birthWeightKg} кг' : '—'),
+                  _buildInfoRow('Тип рогів', goat.hornType ?? '—'),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildOwnersBlock() {
     return Container(
       width: double.infinity,
@@ -37,10 +120,10 @@ class AdministrationTab extends StatelessWidget {
         color: AppColors.cardBackground,
         borderRadius: BorderRadius.circular(14),
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'ЗАВОДЧИК',
             style: TextStyle(
               color: AppColors.textMuted,
@@ -48,17 +131,17 @@ class AdministrationTab extends StatelessWidget {
               letterSpacing: 0.5,
             ),
           ),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           Text(
-            'Мирослав Кравченко',
-            style: TextStyle(
+            goat.breeder ?? '—',
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: 16),
-          Text(
+          const SizedBox(height: 16),
+          const Text(
             'ПОТОЧНИЙ ВЛАСНИК',
             style: TextStyle(
               color: AppColors.textMuted,
@@ -66,10 +149,10 @@ class AdministrationTab extends StatelessWidget {
               letterSpacing: 0.5,
             ),
           ),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           Text(
-            'Мирослав Кравченко',
-            style: TextStyle(
+            goat.owner ?? '—',
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -264,17 +347,20 @@ class AdministrationTab extends StatelessWidget {
             Expanded(child: _buildDocButton('Племсвідоцтво', Icons.assignment)),
           ],
         ),
+        const SizedBox(height: 14),
+        _buildDocButton('Лабораторні аналізи', Icons.biotech_outlined),
       ],
     );
   }
 
   Widget _buildDocButton(String title, IconData icon) {
     return Container(
+      width: double.infinity,
       height: 90,
       decoration: BoxDecoration(
         color: AppColors.cardBackground,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
+        border: Border.all(color: Colors.white.withOpacity(0.03)),
       ),
       child: Material(
         color: Colors.transparent,

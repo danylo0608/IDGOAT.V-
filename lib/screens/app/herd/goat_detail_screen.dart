@@ -65,7 +65,7 @@ class GoatDetailScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.cardBackground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
       ),
       child: Row(
         children: [
@@ -80,7 +80,7 @@ class GoatDetailScreen extends StatelessWidget {
               backgroundColor: const Color(0xFF1A2321),
               child: Icon(
                 Icons.pets,
-                color: AppColors.textGold.withValues(alpha: 0.9),
+                color: AppColors.textGold.withOpacity(0.9),
                 size: 44,
               ),
             ),
@@ -128,11 +128,13 @@ class GoatDetailScreen extends StatelessWidget {
     final rows = <(String, String)>[
       ('Порода', goat.breed ?? 'Англо-нубійська'),
       ('Кровність', goat.bloodline ?? '96.5% - American F5+'),
-      ('ID', goat.displayId),
+      // ('ID', goat.displayId),
+      ('Номер ДАР', goat.darNumber ?? '—'),
       ('Рік народження', '${goat.birthYear ?? 2021}'),
-      ('Вага при нар.', '${goat.birthWeightKg ?? 3.8} кг'),
-      ('Кількість при нар.', '${goat.litterSize ?? 2}'),
-      ('Тип рогів', goat.hornType ?? 'Рогата'),
+      ('Поточна вага', goat.currentWeightKg != null ? '${goat.currentWeightKg} кг' : '—'),
+      // ('Вага при нар.', '${goat.birthWeightKg ?? 3.8} кг'),
+      // ('Кількість у окоті', '${goat.litterSize ?? 2}'),
+      // ('Тип рогів', goat.hornType ?? 'Рогата'),
     ];
 
     return Container(
@@ -158,7 +160,7 @@ class GoatDetailScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.cardBackground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
       ),
       child: Row(
         children: [

@@ -101,7 +101,7 @@ class ReproductionTab extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.cardBackground,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.02)),
+            border: Border.all(color: Colors.white.withOpacity(0.02)),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,7 +282,7 @@ class ReproductionTab extends StatelessWidget {
                 width: 50,
                 height: 54,
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.05),
+                  color: Colors.black.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: Colors.black26,
@@ -340,7 +340,7 @@ class ReproductionTab extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
+                color: Colors.black.withOpacity(0.05),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),

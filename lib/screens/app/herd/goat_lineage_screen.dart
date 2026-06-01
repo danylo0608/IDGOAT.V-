@@ -80,7 +80,7 @@ class GoatLineageScreen extends StatelessWidget {
         Container(
           height: 24,
           width: 1.5,
-          color: AppColors.textGold.withValues(alpha: 0.5),
+          color: AppColors.textGold.withOpacity(0.5),
         ),
         Row(
           children: [
@@ -88,13 +88,13 @@ class GoatLineageScreen extends StatelessWidget {
             Expanded(
               child: Container(
                 height: 1.5,
-                color: AppColors.textGold.withValues(alpha: 0.5),
+                color: AppColors.textGold.withOpacity(0.5),
               ),
             ),
             Expanded(
               child: Container(
                 height: 1.5,
-                color: AppColors.textGold.withValues(alpha: 0.5),
+                color: AppColors.textGold.withOpacity(0.5),
               ),
             ),
             Expanded(child: Container(height: 1.5, color: Colors.transparent)),
@@ -106,12 +106,12 @@ class GoatLineageScreen extends StatelessWidget {
             Container(
               height: 16,
               width: 1.5,
-              color: AppColors.textGold.withValues(alpha: 0.5),
+              color: AppColors.textGold.withOpacity(0.5),
             ),
             Container(
               height: 16,
               width: 1.5,
-              color: AppColors.textGold.withValues(alpha: 0.5),
+              color: AppColors.textGold.withOpacity(0.5),
             ),
           ],
         ),
@@ -281,7 +281,7 @@ class GoatLineageScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.cardBackground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
+        border: Border.all(color: Colors.white.withOpacity(0.03)),
       ),
       child: Column(
         children: [

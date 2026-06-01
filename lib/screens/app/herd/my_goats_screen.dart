@@ -126,7 +126,7 @@ class _MyGoatsScreenState extends State<MyGoatsScreen> {
                 selected: isSelected,
                 onSelected: (_) => setState(() => _selectedFilterIndex = index),
                 backgroundColor: AppColors.cardBackground,
-                selectedColor: AppColors.textGold.withValues(alpha: 0.2),
+                selectedColor: AppColors.textGold.withOpacity(0.2),
                 checkmarkColor: AppColors.textGold,
                 labelStyle: TextStyle(
                   color: isSelected ? AppColors.textGold : AppColors.textMuted,
@@ -210,7 +210,7 @@ class _MyGoatsScreenState extends State<MyGoatsScreen> {
   }) {
     return Material(
       color: isActive
-          ? AppColors.textGold.withValues(alpha: 0.15)
+          ? AppColors.textGold.withOpacity(0.15)
           : AppColors.cardBackground,
       borderRadius: BorderRadius.circular(10),
       child: InkWell(
@@ -277,7 +277,7 @@ class _GoatCard extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+            border: Border.all(color: Colors.white.withOpacity(0.05)),
           ),
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -351,7 +351,7 @@ class _GoatListTile extends StatelessWidget {
           height: 100,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+            border: Border.all(color: Colors.white.withOpacity(0.05)),
           ),
           child: Row(
         children: [

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:idgoat/screens/app/navigation/screens/MainLayoutScreen.dart';
+import 'package:idgoat/screens/app/navigation/screens/main_layout_screen.dart';
 import 'package:idgoat/theme/colors.dart';
 
 class ProfileSelectionScreen extends StatelessWidget {
@@ -136,7 +136,7 @@ class ProfileSelectionScreen extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: Colors.black.withOpacity(0.2),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(icon, color: iconColor, size: 32),

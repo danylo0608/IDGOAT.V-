@@ -65,7 +65,7 @@ class LoginScreen extends StatelessWidget {
         Text(
           'HERITAGE PRECISION',
           style: TextStyle(
-            color: AppColors.textWhite.withValues(alpha: 0.6),
+            color: AppColors.textWhite.withOpacity(0.6),
             fontSize: 12,
             letterSpacing: 3.0,
           ),
@@ -109,7 +109,7 @@ class LoginScreen extends StatelessWidget {
                 Text(
                   'Продовжити з Google',
                   style: TextStyle(
-                    color: AppColors.textWhite.withValues(alpha: 0.9),
+                    color: AppColors.textWhite.withOpacity(0.9),
                     fontSize: 16,
                   ),
                 ),
@@ -152,7 +152,7 @@ class LoginScreen extends StatelessWidget {
                     Text(
                       '(SMS не потрібно)',
                       style: TextStyle(
-                        color: AppColors.textMuted.withValues(alpha: 0.7),
+                        color: AppColors.textMuted.withOpacity(0.7),
                         fontSize: 12,
                       ),
                     ),

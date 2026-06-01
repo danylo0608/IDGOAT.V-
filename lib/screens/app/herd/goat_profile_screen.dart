@@ -28,7 +28,7 @@ class GoatProfileScreen extends StatelessWidget {
           Expanded(
             child: TabBarView(
               children: [
-                AdministrationTab(),
+                AdministrationTab(goat: goat),
                 VeterinaryTab(),
                 ProductivityTab(),
                 ReproductionTab(),
