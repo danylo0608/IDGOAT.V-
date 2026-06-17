@@ -68,17 +68,13 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
   static const _litterCompositions = ['Одностатеві', 'Різностатеві'];
 
   static const _reproductiveStatusesDoe = [
-    'Ремонтний молодняк',
-    'Дійне стадо',
-    'Сухостійна',
-    'Вибракувана'
+    'Репродуктивна',
+    'Стерилізована'
   ];
 
   static const _reproductiveStatusesBuck = [
-    'Цап-плідник',
-    'Пробник',
+    'Репродуктивний',
     'Кастрат',
-    'На відгодівлі'
   ];
 
   static const _physiologicalStatuses = [
@@ -215,6 +211,10 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
                         isRequired: true,
                       ),
 
+                      _buildOwnerField(),
+
+                      _buildIsBreederCheckbox(),
+
                       _buildField(
                         label: 'Заводчик',
                         controller: _breederController,
@@ -222,8 +222,6 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
                         isRequired: true,
                         validator: (v) => v?.isEmpty ?? true ? 'Обов\'язково' : null,
                       ),
-
-                      _buildOwnerField(),
 
                       _buildGenderToggle(),
 
@@ -240,6 +238,8 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
                       if (_isDoe && (_reproductiveStatus == 'Дійне стадо' || _reproductiveStatus == 'Сухостійна'))
                         _buildPhysiologicalStatusCheckboxes(),
 
+                      
+
                       const SizedBox(height: 16),
                       _buildSectionTitle('ДОДАТКОВІ ДАНІ'),
                       
@@ -247,8 +247,7 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
                         label: 'Номер ДАР (Державний аграрний реєстр)',
                         controller: _darController,
                         hint: 'UA XXXXXXXX',
-                        isRequired: true,
-                        validator: (v) => v?.isEmpty ?? true ? 'Обов\'язково' : null,
+                        isRequired: false,
                       ),
 
                       _buildField(
@@ -259,19 +258,20 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
 
                       _buildDatePickerField(),
 
+                      _buildField(
+                        label: 'Поточна вага (кг)',
+                        controller: _currentWeightController,
+                        hint: '0.0',
+                        isRequired: true,
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d.,]'))],
+                      ),
+
+                      const SizedBox(height: 16),
+                      _buildSectionTitle('ПЕРВИННІ ДАНІ'),
+
                       Row(
                         children: [
-                          Expanded(
-                            child: _buildField(
-                              label: 'Поточна вага (кг)',
-                              controller: _currentWeightController,
-                              hint: '0.0',
-                              isRequired: true,
-                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d.,]'))],
-                            ),
-                          ),
-                          const SizedBox(width: 12),
                           Expanded(
                             child: _buildField(
                               label: 'Кількість у окоті',
@@ -281,10 +281,17 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
                               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                             ),
                           ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: _buildDropdown(
+                              label: 'Склад окоту',
+                              value: _litterComposition,
+                              items: _litterCompositions,
+                              onChanged: (v) => setState(() => _litterComposition = v),
+                            ),
+                          ),
                         ],
                       ),
-
-                      _buildLitterCompositionToggle(),
 
                       Row(
                         children: [
@@ -460,6 +467,28 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
     );
   }
 
+  Widget _buildIsBreederCheckbox() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Transform.translate(
+        offset: const Offset(-8, 0),
+        child: Row(
+          children: [
+            Checkbox(
+              value: _isOwnerBreeder,
+              onChanged: (v) => setState(() => _isOwnerBreeder = v ?? false),
+              activeColor: AppColors.textGold,
+              checkColor: Colors.black,
+              side: const BorderSide(color: AppColors.textMuted),
+            ),
+            const Text('Я є заводчиком цієї тварини',
+                style: TextStyle(color: Colors.white70, fontSize: 13)),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildOwnerField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -469,24 +498,9 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
           controller: _ownerController,
           hint: 'ПІБ або назва ферми',
           isRequired: true,
-          validator: (v) => !_isOwnerBreeder && (v?.isEmpty ?? true) ? 'Обов\'язково' : null,
+          validator: (v) =>
+              !_isOwnerBreeder && (v?.isEmpty ?? true) ? 'Обов\'язково' : null,
         ),
-        Transform.translate(
-          offset: const Offset(-8, -12),
-          child: Row(
-            children: [
-              Checkbox(
-                value: _isOwnerBreeder,
-                onChanged: (v) => setState(() => _isOwnerBreeder = v ?? false),
-                activeColor: AppColors.textGold,
-                checkColor: Colors.black,
-                side: const BorderSide(color: AppColors.textMuted),
-              ),
-              const Text('Я є заводчиком цієї тварини', style: TextStyle(color: Colors.white70, fontSize: 13)),
-            ],
-          ),
-        ),
-        const SizedBox(height: 8),
       ],
     );
   }
@@ -679,30 +693,6 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
     );
   }
 
-  Widget _buildLitterCompositionToggle() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildLabel('Склад окоту', false),
-          const SizedBox(height: 12),
-          Row(
-            children: _litterCompositions.map((label) {
-              final isSelected = _litterComposition == label;
-              return Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: _buildToggleButton(label, isSelected, () => setState(() => _litterComposition = label)),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildSubmitButton() {
     return ElevatedButton(
       onPressed: _submit,
@@ -713,7 +703,9 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         elevation: 0,
       ),
-      child: const Text('ЗАРЕЄСТРУВАТИ ТВАРИНУ', style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 15)),
+      child: const Text('ЗАРЕЄСТРУВАТИ ТВАРИНУ',
+          style: TextStyle(
+              fontWeight: FontWeight.bold, letterSpacing: 1, fontSize: 15)),
     );
   }
 }
