@@ -19,11 +19,15 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
 
   static const _tabs = <_NavTab>[
     _NavTab(label: 'Головна', icon: Icons.home_outlined, activeIcon: Icons.home),
-    _NavTab(label: 'Стадо', icon: Icons.pets_outlined, activeIcon: Icons.pets),
+    _NavTab(
+      label: 'Стадо',
+      iconAsset: 'assets/icon/my_goats.png',
+      activeIconAsset: 'assets/icon/my_goats.png',
+    ),
     _NavTab(
       label: 'Ринок',
-      icon: Icons.storefront_outlined,
-      activeIcon: Icons.storefront,
+      iconAsset: 'assets/icon/animal_market.png',
+      activeIconAsset: 'assets/icon/animal_market.png',
     ),
     _NavTab(
       label: 'Профіль',
@@ -89,8 +93,20 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
         items: [
           for (final tab in _tabs)
             BottomNavigationBarItem(
-              icon: Icon(tab.icon),
-              activeIcon: Icon(noTabActive ? tab.icon : tab.activeIcon),
+              icon: tab.iconAsset != null
+                  ? Image.asset(
+                      tab.iconAsset!,
+                      width: 32,
+                      height: 32,
+                    )
+                  : Icon(tab.icon),
+              activeIcon: tab.activeIconAsset != null
+                  ? Image.asset(
+                      tab.activeIconAsset!,
+                      width: 32,
+                      height: 32,
+                    )
+                  : Icon(noTabActive ? tab.icon : tab.activeIcon),
               label: tab.label,
             ),
         ],
@@ -102,11 +118,15 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
 class _NavTab {
   const _NavTab({
     required this.label,
-    required this.icon,
-    required this.activeIcon,
+    this.icon,
+    this.activeIcon,
+    this.iconAsset,
+    this.activeIconAsset,
   });
 
   final String label;
-  final IconData icon;
-  final IconData activeIcon;
+  final IconData? icon;
+  final IconData? activeIcon;
+  final String? iconAsset;
+  final String? activeIconAsset;
 }

@@ -291,7 +291,7 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: _buildSquareMenuButton(
                 label: 'МІЙ ДВІР',
-                icon: Icons.pets,
+                iconAsset: 'assets/icon/my_yard.png',
                 onTap: onOpenMyYard,
               ),
             ),
@@ -299,7 +299,7 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: _buildSquareMenuButton(
                 label: 'РИНОК',
-                icon: Icons.storefront,
+                iconAsset: 'assets/icon/animal_market.png',
                 onTap: () => _showInDevelopmentMessage(context),
               ),
             ),
@@ -307,7 +307,7 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: _buildSquareMenuButton(
                 label: 'ОГОЛОШЕННЯ',
-                icon: Icons.campaign,
+                iconAsset: 'assets/icon/bulletin_board.png',
                 onTap: () => _showInDevelopmentMessage(context),
               ),
             ),
@@ -329,7 +329,8 @@ class HomeScreen extends StatelessWidget {
   // Допоміжна функція для побудови однакових квадратних кнопок
   Widget _buildSquareMenuButton({
     required String label,
-    required IconData icon,
+    String? iconAsset,
+    IconData? icon,
     required VoidCallback onTap,
   }) {
     return Container(
@@ -353,7 +354,13 @@ class HomeScreen extends StatelessWidget {
                   color: Colors.black.withOpacity(0.15),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: AppColors.textGold, size: 28),
+                child: iconAsset != null
+                  ? Image.asset(
+                      iconAsset,
+                      width: 40,
+                      height: 40,
+                    )
+                  : Icon(icon, color: AppColors.textGold, size: 40),
               ),
               const SizedBox(height: 12),
               Text(

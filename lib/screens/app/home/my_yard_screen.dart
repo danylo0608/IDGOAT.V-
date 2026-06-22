@@ -12,42 +12,42 @@ class MyYardScreen extends StatelessWidget {
       {
         'title': 'МОЇ КОЗИ',
         'subtitle': 'Кількість: 45',
-        'icon': Icons.pets,
+        'iconAsset': 'assets/icon/my_goats.png',
         'isNew': false,
         'isPremium': false,
       },
       {
         'title': 'ЖУРНАЛ ПАРУВАНЬ',
         'subtitle': '(NEW)',
-        'icon': Icons.assignment,
+        'iconAsset': 'assets/icon/pairing_magazine.png',
         'isNew': true,
         'isPremium': false,
       },
       {
         'title': 'ВЕТЕРИНАРНИЙ КАЛЕНДАР',
         'subtitle': '',
-        'icon': Icons.calendar_month,
+        'iconAsset': 'assets/icon/veterinary_calendar.png',
         'isNew': false,
         'isPremium': true,
       },
       {
         'title': 'ЕКОНОМІКА',
         'subtitle': '(NEW)',
-        'icon': Icons.attach_money,
+        'iconAsset': 'assets/icon/economics.png',
         'isNew': true,
         'isPremium': true,
       },
       {
         'title': 'ЗВІТИ ТА СТАТИСТИКА',
         'subtitle': '',
-        'icon': Icons.bar_chart,
+        'iconAsset': 'assets/icon/statistics.png',
         'isNew': false,
         'isPremium': true,
       },
       {
         'title': 'КАЛЬКУЛЯТОР РАЦІОНУ',
         'subtitle': '',
-        'icon': Icons.calculate,
+        'iconAsset': 'assets/icon/ration_calculator.png',
         'isNew': false,
         'isPremium': true,
       },
@@ -74,7 +74,7 @@ class MyYardScreen extends StatelessWidget {
               return _buildYardCard(
                 title: item['title'],
                 subtitle: item['subtitle'],
-                icon: item['icon'],
+                iconAsset: item['iconAsset'],
                 isNew: item['isNew'],
                 isPremium: item['isPremium'],
                 onTap: isMyGoats ? onOpenMyGoats : () {},
@@ -85,7 +85,7 @@ class MyYardScreen extends StatelessWidget {
           _buildYardCard(
             title: 'КОРМОВИЙ СКЛАД',
             subtitle: '',
-            icon: Icons.calculate,
+            iconAsset: 'assets/icon/feed_stocks.png',
             isNew: false,
             isPremium: true,
             isFullWidth: true,
@@ -99,7 +99,8 @@ class MyYardScreen extends StatelessWidget {
   Widget _buildYardCard({
     required String title,
     required String subtitle,
-    required IconData icon,
+    String? iconAsset,
+    IconData? icon,
     required bool isNew,
     required bool isPremium,
     required VoidCallback onTap,
@@ -120,12 +121,18 @@ class MyYardScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               onTap: onTap,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(icon, color: AppColors.textGold, size: 32),
-                    const SizedBox(height: 10),
+                    iconAsset != null
+                  ? Image.asset(
+                      iconAsset,
+                      width: 48,
+                      height: 48,
+                    )
+                  : Icon(icon, color: AppColors.textGold, size: 48),
+                    const SizedBox(height: 8),
                     Text(
                       title,
                       textAlign: TextAlign.center,

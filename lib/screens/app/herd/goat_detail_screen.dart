@@ -180,7 +180,7 @@ class GoatDetailScreen extends StatelessWidget {
             Expanded(
               child: _ActionButton(
                 label: 'ДЕТАЛЬНІШЕ',
-                icon: Icons.info_outline,
+                iconAsset: 'assets/icon/details.png',
                 iconColor: AppColors.textGold,
                 backgroundColor: AppColors.cardBackground,
                 textColor: Colors.white,
@@ -191,7 +191,7 @@ class GoatDetailScreen extends StatelessWidget {
             Expanded(
               child: _ActionButton(
                 label: 'ДОДАТИ НОТАТКУ',
-                icon: Icons.edit_note,
+                iconAsset: 'assets/icon/notes.png',
                 iconColor: AppColors.textGold,
                 backgroundColor: AppColors.cardBackground,
                 textColor: Colors.white,
@@ -206,7 +206,7 @@ class GoatDetailScreen extends StatelessWidget {
             Expanded(
               child: _ActionButton(
                 label: 'ЗАФІКСУВАТИ\nОХОТУ',
-                icon: Icons.favorite_border,
+                iconAsset: 'assets/icon/record_hunting.png',
                 iconColor: Colors.white,
                 backgroundColor: _infoGreen,
                 textColor: Colors.white,
@@ -217,7 +217,7 @@ class GoatDetailScreen extends StatelessWidget {
             Expanded(
               child: _ActionButton(
                 label: 'ЗАФІКСУВАТИ\nПОКРИТТЯ',
-                icon: Icons.pets,
+                iconAsset: 'assets/icon/record_mating.png',
                 iconColor: const Color(0xFF1C2D27),
                 backgroundColor: AppColors.textGold,
                 textColor: const Color(0xFF1C2D27),
@@ -232,7 +232,7 @@ class GoatDetailScreen extends StatelessWidget {
             Expanded(
               child: _ActionButton(
                 label: 'ПРОДАТИ',
-                icon: Icons.favorite_border,
+                iconAsset: 'assets/icon/record_sale.png',
                 iconColor: Colors.white,
                 backgroundColor: AppColors.cardBackground,
                 textColor: Colors.white,
@@ -243,7 +243,7 @@ class GoatDetailScreen extends StatelessWidget {
             Expanded(
               child: _ActionButton(
                 label: 'ГЕНЕТИЧНЕ\nДЕРЕВО',
-                icon: Icons.pets,
+                iconAsset: 'assets/icon/pedigree.png',
                 iconColor: Colors.white,
                 backgroundColor: AppColors.cardBackground,
                 textColor: Colors.white,
@@ -348,7 +348,8 @@ class _ParentColumn extends StatelessWidget {
 class _ActionButton extends StatelessWidget {
   const _ActionButton({
     required this.label,
-    required this.icon,
+    this.icon,
+    this.iconAsset,
     required this.iconColor,
     required this.backgroundColor,
     required this.textColor,
@@ -356,7 +357,8 @@ class _ActionButton extends StatelessWidget {
   });
 
   final String label;
-  final IconData icon;
+  final IconData? icon;
+  final String? iconAsset;
   final Color iconColor;
   final Color backgroundColor;
   final Color textColor;
@@ -376,7 +378,13 @@ class _ActionButton extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: iconColor, size: 26),
+              iconAsset != null
+                  ? Image.asset(
+                      iconAsset!,
+                      width: 40,
+                      height: 40,
+                    )
+                  : Icon(icon, color: iconColor, size: 40),
               const SizedBox(height: 8),
               Text(
                 label,
