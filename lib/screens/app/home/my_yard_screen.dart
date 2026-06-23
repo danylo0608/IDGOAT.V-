@@ -114,6 +114,10 @@ class MyYardScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.cardBackground,
             borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: iconAsset != null ? AppColors.textGold : Colors.transparent,
+              width: 2,
+            ),
           ),
           child: Material(
             color: Colors.transparent,

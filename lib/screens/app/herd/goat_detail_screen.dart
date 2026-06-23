@@ -366,25 +366,33 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: backgroundColor,
-      borderRadius: BorderRadius.circular(14),
-      child: InkWell(
-        onTap: onTap,
+    return Container(
+      decoration: BoxDecoration(
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(14),
-        child: Container(
-          height: 88,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              iconAsset != null
-                  ? Image.asset(
-                      iconAsset!,
-                      width: 40,
-                      height: 40,
-                    )
-                  : Icon(icon, color: iconColor, size: 40),
+        border: Border.all(
+          color: iconAsset != null ? AppColors.textGold : Colors.transparent,
+          width: 2,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(14),
+          child: Container(
+            height: 88,
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                iconAsset != null
+                    ? Image.asset(
+                        iconAsset!,
+                        width: 40,
+                        height: 40,
+                      )
+                    : Icon(icon, color: iconColor, size: 40),
               const SizedBox(height: 8),
               Text(
                 label,
@@ -400,6 +408,6 @@ class _ActionButton extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ),);
   }
 }

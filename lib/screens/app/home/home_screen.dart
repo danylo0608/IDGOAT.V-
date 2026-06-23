@@ -327,60 +327,85 @@ class HomeScreen extends StatelessWidget {
   }
 
   // Допоміжна функція для побудови однакових квадратних кнопок
-  Widget _buildSquareMenuButton({
-    required String label,
-    String? iconAsset,
-    IconData? icon,
-    required VoidCallback onTap,
-  }) {
-    return Container(
-      height: 110,
-      decoration: BoxDecoration(
-        color: AppColors.cardBackground,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+Widget _buildSquareMenuButton({
+  required String label,
+  String? iconAsset,
+  IconData? icon,
+  required VoidCallback onTap,
+}) {
+  // Задаємо фіксований розмір для квадратної іконки/фото всередині кнопки
+  const double imageSize = 80.0; 
+
+  return Container(
+    // Прибираємо фіксовану висоту 110, щоб кнопка стала прямокутною 
+    // і підлаштовувалася під розмір іконки + тексту під нею
+    decoration: BoxDecoration(
+      color: AppColors.cardBackground,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(
+        color: iconAsset != null ? AppColors.textGold : Colors.white.withOpacity(0.05),
+        width: 2,
       ),
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(16),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
           onTap: onTap,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.15),
-                  shape: BoxShape.circle,
+          child: Padding(
+            // Додаємо внутрішні відступи для всієї прямокутної кнопки
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // Кнопка стискається по висоті контенту
+              children: [
+                
+                // 1. ВЕРХНЯ ЧАСТИНА: Строго квадратна іконка або фото
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12), // Закруглюємо кути самої іконки
+                  child: SizedBox(
+                    width: imageSize,
+                    height: imageSize, // Гарантує, що фото буде 1:1 (квадратним)
+                    child: iconAsset != null
+                        ? Image.asset(
+                            iconAsset,
+                            fit: BoxFit.cover, // Фото заповнить квадрат без спотворень
+                          )
+                        : Container(
+                            color: Colors.black.withOpacity(0.15), // Підкладка для іконки
+                            child: Icon(
+                              icon,
+                              color: AppColors.textGold,
+                              size: 36,
+                            ),
+                          ),
+                  ),
                 ),
-                child: iconAsset != null
-                  ? Image.asset(
-                      iconAsset,
-                      width: 40,
-                      height: 40,
-                    )
-                  : Icon(icon, color: AppColors.textGold, size: 40),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                label,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.5,
+
+                // Відступ між квадратним фото та написом під ним
+                const SizedBox(height: 10),
+
+                // 2. НИЖНЯ ЧАСТИНА: Напис під іконкою
+                Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  maxLines: 2, // Дозволяємо тексту переноситись на 2 рядки, якщо назва довга
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    );
-  }
-
-  // --- 3. Акція тижня ---
+    ),
+  );
+}
   Widget _buildWeeklyPromo() {
     return Container(
       width: double.infinity,

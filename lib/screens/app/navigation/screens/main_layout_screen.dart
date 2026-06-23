@@ -17,17 +17,12 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
   int _currentIndex = 0;
   bool _isMyYardOpen = false;
 
-  static const _tabs = <_NavTab>[
+  late final List<_NavTab> _tabs = [
     _NavTab(label: 'Головна', icon: Icons.home_outlined, activeIcon: Icons.home),
     _NavTab(
-      label: 'Стадо',
-      iconAsset: 'assets/icon/my_goats.png',
-      activeIconAsset: 'assets/icon/my_goats.png',
-    ),
-    _NavTab(
       label: 'Ринок',
-      iconAsset: 'assets/icon/animal_market.png',
-      activeIconAsset: 'assets/icon/animal_market.png',
+      icon: Icons.local_mall,
+      activeIcon: Icons.local_mall,
     ),
     _NavTab(
       label: 'Профіль',
