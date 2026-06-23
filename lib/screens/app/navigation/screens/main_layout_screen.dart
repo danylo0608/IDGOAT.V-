@@ -20,6 +20,13 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
   late final List<_NavTab> _tabs = [
     _NavTab(label: 'Головна', icon: Icons.home_outlined, activeIcon: Icons.home),
     _NavTab(
+      label: 'Стадо',
+      // iconAsset: 'assets/icon/goat.jpg',
+      icon: Icons.list,
+      activeIcon: Icons.list
+      // activeIconAsset: 'assets/icon/goat.jpg',
+    ),
+    _NavTab(
       label: 'Ринок',
       icon: Icons.local_mall,
       activeIcon: Icons.local_mall,

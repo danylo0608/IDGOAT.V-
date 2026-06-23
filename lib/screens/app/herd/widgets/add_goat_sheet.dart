@@ -41,26 +41,64 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
   // State variables
   bool _isDoe = true;
   bool _isOwnerBreeder = false;
+  bool _isMix = false;
   String? _reproductiveStatus;
   String? _hornType;
   String? _litterComposition;
   DateTime _birthDate = DateTime.now();
   final List<String> _selectedPhysiologicalStatuses = [];
+  final List<String> _availableBreeds = [
+    'Англо-нубійська',
+    'Зааненська',
+    'Тогенбурзька',
+    'Альпійська',
+    'Нубійська',
+    'Ламанча',
+    'Нigerian Dwarf',
+    'Піренейська',
+  ];
   
   // Breed constructor state
   final List<Map<String, dynamic>> _breeds = [
     {'name': 'Англо-нубійська', 'purity': 100.0}
   ];
 
+  void _toggleMix(bool value) {
+    setState(() {
+      _isMix = value;
+      if (!value) {
+        // If not mix, keep only first breed and set to 100%
+        if (_breeds.isNotEmpty) {
+          _breeds[0]['purity'] = 100.0;
+        }
+        while (_breeds.length > 1) {
+          _breeds.removeLast();
+        }
+      }
+    });
+  }
+
   void _addBreed() {
     setState(() {
-      _breeds.add({'name': 'Нова порода', 'purity': 0.0});
+      _breeds.add({'name': 'Зааненська', 'purity': 0.0});
+    });
+  }
+
+  void _removeBreed(int index) {
+    setState(() {
+      _breeds.removeAt(index);
     });
   }
 
   void _updateBreedPurity(int index, double purity) {
     setState(() {
       _breeds[index]['purity'] = purity;
+    });
+  }
+
+  void _updateBreedName(int index, String name) {
+    setState(() {
+      _breeds[index]['name'] = name;
     });
   }
 
@@ -582,6 +620,27 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
         children: [
           _buildLabel('Порода та Кровність', true),
           const SizedBox(height: 8),
+          
+          // Mix checkbox
+          Transform.translate(
+            offset: const Offset(-8, 0),
+            child: Row(
+              children: [
+                Checkbox(
+                  value: _isMix,
+                  onChanged: (v) => _toggleMix(v ?? false),
+                  activeColor: AppColors.textGold,
+                  checkColor: Colors.black,
+                  side: const BorderSide(color: AppColors.textMuted),
+                ),
+                const Text('Мікс (кілька порід)',
+                    style: TextStyle(color: Colors.white70, fontSize: 13)),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          // Breed list
           ..._breeds.asMap().entries.map((entry) {
             final index = entry.key;
             final breed = entry.value;
@@ -592,33 +651,75 @@ class _AddGoatSheetState extends State<AddGoatSheet> {
                   Expanded(
                     flex: 2,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      decoration: BoxDecoration(color: AppColors.cardBackground, borderRadius: BorderRadius.circular(8)),
-                      child: Text(breed['name'], style: const TextStyle(color: Colors.white, fontSize: 13)),
+                      decoration: BoxDecoration(
+                        color: AppColors.cardBackground,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: DropdownButtonFormField<String>(
+                        value: breed['name'],
+                        isExpanded: true,
+                        items: _availableBreeds.map((breedName) {
+                          return DropdownMenuItem(
+                            value: breedName,
+                            child: Text(breedName, style: const TextStyle(color: Colors.white, fontSize: 13)),
+                          );
+                        }).toList(),
+                        onChanged: _isMix ? (value) {
+                          if (value != null) _updateBreedName(index, value);
+                        } : null,
+                        dropdownColor: AppColors.cardBackground,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      decoration: BoxDecoration(color: AppColors.cardBackground, borderRadius: BorderRadius.circular(8)),
-                      child: Text('${breed['purity']}%', style: const TextStyle(color: AppColors.textGold, fontSize: 13, fontWeight: FontWeight.bold)),
+                      decoration: BoxDecoration(
+                        color: AppColors.cardBackground,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: TextFormField(
+                        initialValue: '${breed['purity']}',
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d.,]'))],
+                        style: const TextStyle(color: AppColors.textGold, fontSize: 13, fontWeight: FontWeight.bold),
+                        onChanged: _isMix ? (value) {
+                          final purity = double.tryParse(value.replaceAll(',', '.')) ?? 0.0;
+                          _updateBreedPurity(index, purity);
+                        } : null,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          suffixText: '%',
+                          suffixStyle: TextStyle(color: AppColors.textMuted),
+                        ),
+                      ),
                     ),
                   ),
-                  if (_breeds.length > 1)
+                  if (_isMix && _breeds.length > 1)
                     IconButton(
                       icon: const Icon(Icons.remove_circle_outline, color: Colors.redAccent, size: 20),
-                      onPressed: () => setState(() => _breeds.removeAt(index)),
+                      onPressed: () => _removeBreed(index),
                     ),
                 ],
               ),
             );
           }),
-          TextButton.icon(
-            onPressed: _addBreed,
-            icon: const Icon(Icons.add_circle_outline, size: 18, color: AppColors.textGold),
-            label: const Text('Додати частку породи', style: TextStyle(color: AppColors.textGold, fontSize: 13)),
-          ),
+          
+          if (_isMix)
+            TextButton.icon(
+              onPressed: _addBreed,
+              icon: const Icon(Icons.add_circle_outline, size: 18, color: AppColors.textGold),
+              label: const Text('Додати частку породи', style: TextStyle(color: AppColors.textGold, fontSize: 13)),
+            ),
         ],
       ),
     );
